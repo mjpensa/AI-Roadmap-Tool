@@ -168,7 +168,7 @@ app.post('/generate-chart', upload.array('researchFiles'), async (req, res) => {
       - A task in "2022" has \`startCol: 3, endCol: 4\` (if 2020 is col 1).
       - If a date is "Q1 2024" and the interval is "Years", "2024" is the column. Map it to the "2024" column index.
       - If a date is unknown ("null"), the 'bar' object must be \`{ "startCol": null, "endCol": null, "color": "..." }\`.
-  5.  **COLORS:** Assign colors logically ("blue", "ochre", "orange", "green", "default").
+  5.  **COLORS:** Assign colors logically from this list: ("blue", "ochre", "orange", "green").
   6.  **SANITIZATION:** All string values MUST be valid JSON strings. You MUST properly escape any characters that would break JSON, such as double quotes (\") and newlines (\\n), within the string value itself.`;
   
   const geminiUserQuery = `User Prompt: "${userPrompt}"\n\nResearch Content:\n${researchTextCache}`;
