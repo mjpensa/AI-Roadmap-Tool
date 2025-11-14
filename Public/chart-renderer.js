@@ -130,6 +130,13 @@ function setupChart(ganttData) {
 
   chartWrapper.appendChild(gridEl);
   
+  // --- NEW: Add Legend (if it exists) ---
+  if (ganttData.legend && ganttData.legend.length > 0) {
+    const legendEl = buildLegend(ganttData.legend);
+    chartWrapper.appendChild(legendEl);
+  }
+  // --- END: Add Legend ---
+  
   // --- Add Export Button ---
   const exportContainer = document.createElement('div');
   exportContainer.className = 'export-container';
@@ -517,4 +524,41 @@ function buildAnalysisList(title, items, itemKey, sourceKey) {
       <ul class="analysis-list">${listItems}</ul>
     </div>
   `;
+}
+
+/**
+ * --- NEW: Helper function to build the legend ---
+ * @param {Array} legendData - Array of {color: string, label: string}
+ * @returns {HTMLElement} The legend element
+ */
+function buildLegend(legendData) {
+  const legendEl = document.createElement('div');
+  legendEl.className = 'gantt-legend';
+
+  const titleEl = document.createElement('h4');
+  titleEl.className = 'legend-title';
+  titleEl.textContent = 'Legend';
+  legendEl.appendChild(titleEl);
+
+  const listEl = document.createElement('div');
+  listEl.className = 'legend-list';
+  legendEl.appendChild(listEl);
+
+  for (const item of legendData) {
+    const itemEl = document.createElement('div');
+    itemEl.className = 'legend-item';
+    
+    const colorBox = document.createElement('span');
+    colorBox.className = 'legend-color-box';
+    colorBox.setAttribute('data-color', item.color); // Use data-color
+    
+    const labelEl = document.createElement('span');
+    labelEl.className = 'legend-label';
+    labelEl.textContent = item.label;
+    
+    itemEl.appendChild(colorBox);
+    itemEl.appendChild(labelEl);
+    listEl.appendChild(itemEl);
+  }
+  return legendEl;
 }
