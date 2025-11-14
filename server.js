@@ -170,10 +170,10 @@ app.post('/generate-chart', upload.array('researchFiles'), async (req, res) => {
       - If a date is unknown ("null"), the 'bar' object must be \`{ "startCol": null, "endCol": null, "color": "..." }\`.
   5.  **COLORS & LEGEND:** This is a two-step process.
       a.  **Step 1: Find Cross-Swimlane Themes:** First, analyze ALL tasks from ALL swimlanes. Try to find logical, thematic groupings (e.g., "Regulatory Activity", "Product Launch", "Internal Review").
-      b.  **Step 2: Assign Colors:**
-          * **IF you find 2-4 strong thematic groupings:** Assign a unique color ("blue", "ochre", "orange", "green") to each theme. Color ALL tasks belonging to that theme with its assigned color, *regardless of which swimlane they are in*.
-          * **IF you do this:** You MUST populate the 'legend' array, e.g., \`"legend": [{ "color": "blue", "label": "Regulatory Activity" }, { "color": "green", "label": "Product Launch" }]\`.
-          * **FALLBACK:** If you *cannot* find any logical themes, then do this instead: assign a *single, different* color to each swimlane (e.g., all tasks under "Swimlane A" are "blue", all tasks under "Swimlane B" are "green").
+      b.  **Step 2: Assign Colors:** The available color names are: "light-grey", "mid-grey", "light-red", "dark-blue", "dark-red".
+          * **IF you find 2-5 strong thematic groupings:** Assign a unique color from the available list to each theme. Color ALL tasks belonging to that theme with its assigned color, *regardless of which swimlane they are in*.
+          * **IF you do this:** You MUST populate the 'legend' array, e.g., \`"legend": [{ "color": "dark-red", "label": "Regulatory Activity" }, { "color": "dark-blue", "label": "Product Launch" }]\`.
+          * **FALLBACK:** If you *cannot* find any logical themes, then do this instead: assign a *single, different* color from the available list to each swimlane (e.g., all tasks under "Swimlane A" are "dark-red", all tasks under "Swimlane B" are "dark-blue").
           * **IF you use the FALLBACK:** The 'legend' array MUST be an empty array \`[]\`.
   6.  **SANITIZATION:** All string values MUST be valid JSON strings. You MUST properly escape any characters that would break JSON, such as double quotes (\") and newlines (\\n), within the string value itself.`;
   

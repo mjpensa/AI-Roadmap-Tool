@@ -118,15 +118,14 @@
   grid-row: 1; /* Always on the first (and only) row of its container */
 }
 
-/* Bar Colors (Updated to Dark Mode Palette) */
-.gantt-bar[data-color="blue"] { background-color: #2E7BB1; } /* Dark Blue */
-.gantt-bar[data-color="ochre"] { background-color: #EE9E20; } /* Gold/Ochre */
-.gantt-bar[data-color="orange"] { background-color: #BA3930; } /* Red */
-.gantt-bar[data-color="green"] { background-color: #50AF7B; } /* Green */
-.gantt-bar[data-color="default"] { background-color: #874E61; } /* Default/Purple */
+/* Bar Colors (NEW PALETTE) */
+.gantt-bar[data-color="light-grey"] { background-color: #F1F2F3; }
+.gantt-bar[data-color="mid-grey"] { background-color: #7D8A99; }
+.gantt-bar[data-color="light-red"] { background-color: #FCB7B3; }
+.gantt-bar[data-color="dark-blue"] { background-color: #354259; }
+.gantt-bar[data-color="dark-red"] { background-color: #961111; }
+/* Deprecated colors removed */
 
-/* Note: The five color names map to the first five colors you provided. 
-   I used #874E61 for the 'default' color as a sixth distinct color in the palette. */
 
 /* 13. Export Button Styling */
 .export-container {
@@ -140,7 +139,7 @@
   font-size: 14px;
   font-weight: 600;
   color: #ffffff;
-  background-color: #50AF7B; /* Use one of the new dark mode colors (Green) */
+  background-color: #50AF7B; /* Use one of the old dark mode colors (Green) */
   border: none;
   border-radius: 6px;
   padding: 10px 20px;
@@ -162,7 +161,7 @@
 .gantt-today-line {
   position: absolute;
   width: 1px; /* Thin red line */
-  background-color: #BA3930; /* Use Red color from new palette */
+  background-color: #BA3930; /* Use Red color from old palette */
   z-index: 3; /* Above bars (bars are z-index 2) */
   /* 'top', 'bottom', and 'left' are set by JavaScript */
 }
@@ -474,12 +473,13 @@
   border-radius: 3px;
 }
 
-/* Use data-color attributes for legend, just like bars */
-.legend-color-box[data-color="blue"] { background-color: #2E7BB1; }
-.legend-color-box[data-color="ochre"] { background-color: #EE9E20; }
-.legend-color-box[data-color="orange"] { background-color: #BA3930; }
-.legend-color-box[data-color="green"] { background-color: #50AF7B; }
-/* Note: We are NOT including the .gantt-bar[data-color="default"] here on purpose */
+/* Use data-color attributes for legend (NEW PALETTE) */
+.legend-color-box[data-color="light-grey"] { background-color: #F1F2F3; }
+.legend-color-box[data-color="mid-grey"] { background-color: #7D8A99; }
+.legend-color-box[data-color="light-red"] { background-color: #FCB7B3; }
+.legend-color-box[data-color="dark-blue"] { background-color: #354259; }
+.legend-color-box[data-color="dark-red"] { background-color: #961111; }
+
 
 .legend-label {
   font-size: 13px;
