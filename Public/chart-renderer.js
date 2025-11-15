@@ -294,35 +294,31 @@ function setupChart(ganttData) {
   verticalBorderEl.style.overflow = 'hidden'; 
   verticalBorderEl.style.zIndex = '5'; 
 
-  // --- FIX: Create a new inner element for the background ---
+  // --- FIX: Create an inner element to rotate ---
   const verticalInnerEl = document.createElement('div');
   
   // --- FIX: Style the inner element ---
-  // We make it extremely tall and position it at the top
+  // Position it absolutely to fill the parent
   verticalInnerEl.style.position = 'absolute';
-  verticalInnerEl.style.left = '0';
   verticalInnerEl.style.top = '0';
-  verticalInnerEl.style.width = '30px';
-  verticalInnerEl.style.height = '8000px'; // Arbitrarily tall
+  verticalInnerEl.style.left = '0';
+  verticalInnerEl.style.width = '100%'; // 30px
+  verticalInnerEl.style.height = '100%'; // 100% of chart height
   
+  // Use writing-mode and transform to rotate the element's coordinate system
+  verticalInnerEl.style.writingMode = 'vertical-rl';
+  verticalInnerEl.style.transform = 'rotate(180deg)';
+
   // Get the encoded SVG
   const encodedSVG = encodeURIComponent(footerSVG.replace(/(\r\n|\n|\r)/gm, ""));
   
-  // Apply the background, but ROTATED
+  // Apply the background
   verticalInnerEl.style.backgroundImage = `url("data:image/svg+xml,${encodedSVG}")`;
-  verticalInnerEl.style.backgroundRepeat = 'repeat-y'; // Repeat vertically
-  verticalInnerEl.style.backgroundSize = '30px 1280px'; // Flip dimensions
+  // Repeat along the new X-axis (which is now vertical)
+  verticalInnerEl.style.backgroundRepeat = 'repeat-x';
+  // Use the native SVG size to prevent stretching
+  verticalInnerEl.style.backgroundSize = '1280px 30px'; 
   
-  // Rotate the entire inner element
-  verticalInnerEl.style.transform = 'rotate(90deg)';
-  // Adjust transform origin to top left
-  verticalInnerEl.style.transformOrigin = 'top left';
-
-  // --- Adjust position post-rotation ---
-  // The rotation moves it, so we move it back
-  // Move it "left" by its new "height" (30px)
-  verticalInnerEl.style.left = '30px';
-
   verticalBorderEl.appendChild(verticalInnerEl);
   chartWrapper.appendChild(verticalBorderEl);
   // --- END: Add Vertical SVG Border ---
