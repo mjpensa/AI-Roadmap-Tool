@@ -738,9 +738,11 @@ function setupChart(ganttData) {
   verticalSvgEl.style.left = '0';
   verticalSvgEl.style.top = '0';
   verticalSvgEl.style.width = '30px';
+  verticalSvgEl.style.zIndex = '5';
+  verticalSvgEl.style.backgroundColor = 'rgba(255, 0, 0, 0.3)'; // DEBUG: temporary red tint
   verticalSvgEl.style.backgroundImage = `url("data:image/svg+xml,${encodedVerticalSVG}")`;
   verticalSvgEl.style.backgroundRepeat = 'repeat-y';
-  verticalSvgEl.style.backgroundSize = '30px auto';
+  verticalSvgEl.style.backgroundSize = '30px 1280px';
 
   // Also add the new styles for margin/height
   verticalSvgEl.style.height = 'calc(100% - 30px)';
