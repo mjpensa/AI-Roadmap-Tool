@@ -732,22 +732,20 @@ function setupChart(ganttData) {
   const verticalSvgEl = document.createElement('div');
   verticalSvgEl.className = 'gantt-vertical-svg';
 
-  // Apply all styles inline, EXACTLY like the footer
+  // Apply all styles inline, just like the footer
   verticalSvgEl.style.position = 'absolute';
   verticalSvgEl.style.left = '0';
   verticalSvgEl.style.top = '0';
   verticalSvgEl.style.width = '30px';
-  verticalSvgEl.style.height = '100%';
-  verticalSvgEl.style.zIndex = '5';
-  verticalSvgEl.style.pointerEvents = 'none';
-
-  // Use background-image to repeat the pattern vertically (like footer uses repeat-x)
   verticalSvgEl.style.backgroundImage = `url("data:image/svg+xml,${encodedVerticalSVG}")`;
   verticalSvgEl.style.backgroundRepeat = 'repeat-y';
   verticalSvgEl.style.backgroundSize = '30px auto';
+  verticalSvgEl.style.zIndex = '5';
+  verticalSvgEl.style.pointerEvents = 'none';
 
-  // DEBUG: Add visible background
-  verticalSvgEl.style.backgroundColor = 'rgba(0, 255, 0, 0.3)'; // Semi-transparent green
+  // Also add the new styles for height (matching footer's width/marginLeft pattern)
+  verticalSvgEl.style.height = 'calc(100% - 30px)';
+  verticalSvgEl.style.marginTop = '0';
 
   // Don't append yet - we'll append it after the footer for consistency
   // --- END: Add Vertical SVG ---
