@@ -726,28 +726,24 @@ function setupChart(ganttData) {
   chartWrapper.appendChild(logoImg);
   // --- END: Add BIP Logo ---
 
-  // --- NEW: Add Vertical SVG (matching footer approach exactly) ---
+  // --- NEW: Add Vertical SVG ---
+  // --- FIX: Reverting to the original, fully inline-styled implementation ---
   const encodedVerticalSVG = encodeURIComponent(verticalSVG.replace(/(\r\n|\n|\r)/gm, ""));
 
   const verticalSvgEl = document.createElement('div');
   verticalSvgEl.className = 'gantt-vertical-svg';
 
-  // Apply all styles inline, just like the footer
-  verticalSvgEl.style.position = 'absolute';
-  verticalSvgEl.style.left = '0';
-  verticalSvgEl.style.top = '0';
+  // Apply all styles inline, just like the original code
   verticalSvgEl.style.width = '30px';
   verticalSvgEl.style.backgroundImage = `url("data:image/svg+xml,${encodedVerticalSVG}")`;
   verticalSvgEl.style.backgroundRepeat = 'repeat-y';
   verticalSvgEl.style.backgroundSize = '30px auto';
-  verticalSvgEl.style.zIndex = '5';
-  verticalSvgEl.style.pointerEvents = 'none';
 
-  // Also add the new styles for height (matching footer's width/marginLeft pattern)
+  // Also add the new styles for margin/height
   verticalSvgEl.style.height = 'calc(100% - 30px)';
   verticalSvgEl.style.marginTop = '0';
 
-  // Don't append yet - we'll append it after the footer for consistency
+  chartWrapper.appendChild(verticalSvgEl);
   // --- END: Add Vertical SVG ---
   
   // Add Title (from data)
@@ -860,10 +856,6 @@ function setupChart(ganttData) {
   chartWrapper.appendChild(footerSvgEl);
   // --- END: Add Footer SVG ---
 
-  // --- NOW: Append Vertical SVG (after all other content) ---
-  chartWrapper.appendChild(verticalSvgEl);
-  // --- END: Append Vertical SVG ---
-  
   // --- Add Export Button ---
   const exportContainer = document.createElement('div');
   exportContainer.className = 'export-container';
@@ -876,16 +868,6 @@ function setupChart(ganttData) {
   // Add the chart and button to the page
   container.appendChild(chartWrapper);
   container.appendChild(exportContainer);
-
-  // --- FIX: Set vertical SVG height after DOM is rendered ---
-  // Now that chartWrapper is in the DOM with all its content,
-  // we can get its actual rendered height and apply it to the vertical SVG
-  // Use setTimeout to ensure layout is complete
-  setTimeout(() => {
-    const actualHeight = chartWrapper.scrollHeight;
-    verticalSvgEl.style.height = `${actualHeight}px`;
-  }, 0);
-  // --- END FIX ---
 
   // Add Export Functionality
   addExportListener();
