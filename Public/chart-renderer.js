@@ -300,17 +300,12 @@ function setupChart(ganttData) {
   verticalInnerEl.style.writingMode = 'vertical-rl';
   verticalInnerEl.style.transform = 'rotate(180deg)';
 
-  // Set its "width" (now vertical) to span the container height
-  // and its "height" (now horizontal) to match the SVG height
-  verticalInnerEl.style.position = 'absolute';
-  verticalInnerEl.style.top = '0';
-  verticalInnerEl.style.left = '0';
-  // --- FIX: Add bottom: 0 and right: 0 to make the inner element fill the parent ---
-  verticalInnerEl.style.bottom = '0';
-  verticalInnerEl.style.right = '0';
-  // --- This makes width=100% (vertical) and height=100% (horizontal) correct ---
+  // --- FIX: Use width: 100% and height: 30px ---
+  // This makes its vertical dimension (width) span the parent's height
+  // and its horizontal dimension (height) match the parent's width.
   verticalInnerEl.style.width = '100%';
-  verticalInnerEl.style.height = '100%';
+  verticalInnerEl.style.height = '30px';
+  // --- END FIX ---
   
   // Get the same encoded SVG string as the footer
   const encodedSVG = encodeURIComponent(footerSVG.replace(/(\r\n|\n|\r)/gm, ""));
@@ -318,7 +313,6 @@ function setupChart(ganttData) {
   // Apply the same repeating background as the footer
   verticalInnerEl.style.backgroundImage = `url("data:image/svg+xml,${encodedSVG}")`;
   verticalInnerEl.style.backgroundRepeat = 'repeat-x'; // Repeat along its "width" (now vertical)
-  // --- FIX: Use explicit SVG dimensions for background-size ---
   verticalInnerEl.style.backgroundSize = '1280px 30px'; // Use native SVG dimensions
   
   verticalBorderEl.appendChild(verticalInnerEl);
