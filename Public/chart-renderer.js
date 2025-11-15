@@ -469,7 +469,7 @@ function findTodayColumnPosition(today, timeColumns) {
 /**
  * Gets the ISO 8601 week number for a given date.
  * @param {Date} date - The date.
-S @returns {number} The week number.
+ * @returns {number} The week number.
  */
 function getWeek(date) {
   var d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
@@ -572,4 +572,170 @@ async function showAnalysisModal(taskIdentifier) {
 
   } catch (error) {
     console.error("Error fetching analysis:", error);
-    document.getElementById('modal-body-content').innerHTML = `<div class="modal-error">Failed to load analysis: ${
+    // --- FIX: This line was incomplete and the function was missing a closing brace ---
+    document.getElementById('modal-body-content').innerHTML = `<div class="modal-error">Failed to load analysis: ${error.message}</div>`;
+  }
+} // --- FIX: Added missing closing brace for the showAnalysisModal function ---
+
+/**
+ * --- NEW: Handles the "Ask" button submit in the modal ---
+ * This function was missing from the original truncated file.
+ */
+async function handleAskQuestion(taskIdentifier) {
+  const chatInput = document.getElementById('chat-input');
+  const chatHistory = document.getElementById('chat-history');
+  const chatForm = document.getElementById('chat-form');
+  const question = chatInput.value.trim();
+
+  if (!question) return;
+
+  // Disable form
+  chatInput.disabled = true;
+  chatForm.querySelector('button').disabled = true;
+
+  // Add user message
+  const userMessage = document.createElement('div');
+  userMessage.className = 'chat-message chat-message-user';
+  userMessage.textContent = question;
+  chatHistory.appendChild(userMessage);
+
+  // Add loading spinner
+  const loadingMessage = document.createElement('div');
+  loadingMessage.className = 'chat-message chat-message-llm';
+  loadingMessage.innerHTML = '<div class="chat-spinner"></div>';
+  chatHistory.appendChild(loadingMessage);
+
+  // Scroll to bottom
+  chatHistory.scrollTop = chatHistory.scrollHeight;
+  chatInput.value = '';
+
+  try {
+    // Call the /ask-question endpoint
+    const response = await fetch('/ask-question', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ...taskIdentifier,
+        question: question
+      })
+    });
+
+    if (!response.ok) {
+      const err = await response.json();
+      throw new Error(err.error || 'Server error');
+    }
+
+    const data = await response.json();
+    
+    // Replace spinner with answer
+    loadingMessage.innerHTML = data.answer;
+
+  } catch (error) {
+    // Replace spinner with error
+    loadingMessage.innerHTML = `Error: ${error.message}`;
+    loadingMessage.style.color = '#BA3930';
+  } finally {
+    // Re-enable form
+    chatInput.disabled = false;
+    chatForm.querySelector('button').disabled = false;
+    chatInput.focus();
+    // Scroll to bottom again
+    chatHistory.scrollTop = chatHistory.scrollHeight;
+  }
+}
+
+/**
+ * --- NEW: Builds an HTML string for a simple analysis section ---
+ * This function was missing from the original truncated file.
+ * @param {string} title - The title of the section.
+ * @param {string} content - The HTML or text content.
+ * @returns {string} HTML string.
+ */
+function buildAnalysisSection(title, content) {
+  if (!content) return ''; // Don't render empty sections
+  
+  return `
+    <div class="analysis-section">
+      <h4>${title}</h4>
+      <p>${content}</p>
+    </div>
+  `;
+}
+
+/**
+ * --- NEW: Builds an HTML string for a list of facts or assumptions ---
+ * This function was missing from the original truncated file.
+ * @param {string} title - The title of the section.
+ * @param {Array} items - The array of items (facts/assumptions).
+ * @param {string} itemKey - The key for the main text (e.g., "fact").
+ * @param {string} sourceKey - The key for the source text (e.g., "source").
+ * @returns {string} HTML string.
+ */
+function buildAnalysisList(title, items, itemKey, sourceKey) {
+  if (!items || items.length === 0) return ''; // Don't render empty lists
+
+  let listHtml = `
+    <div class="analysis-section">
+      <h4>${title}</h4>
+      <ul class="analysis-list">
+  `;
+
+  for (const item of items) {
+    const text = item[itemKey];
+    const source = item[sourceKey];
+    const url = item.url;
+
+    listHtml += '<li>';
+    listHtml += `<p>${text}</p>`;
+    
+    if (url) {
+      listHtml += `<span class="source"><a href="${url}" target="_blank" rel="noopener noreferrer">${source}</a></span>`;
+    } else if (source) {
+      listHtml += `<span class="source">${source}</span>`;
+    }
+    
+    listHtml += '</li>';
+  }
+
+  listHtml += '</ul></div>';
+  return listHtml;
+}
+
+/**
+ * --- NEW: Builds the legend HTML element ---
+ * This function was missing from the original truncated file.
+ * @param {Array} legendData - The array of legend items.
+ * @returns {HTMLElement} The .gantt-legend element.
+ */
+function buildLegend(legendData) {
+  const legendEl = document.createElement('div');
+  legendEl.className = 'gantt-legend';
+
+  const titleEl = document.createElement('div');
+  titleEl.className = 'legend-title';
+  titleEl.textContent = 'Legend';
+  legendEl.appendChild(titleEl);
+
+  const listEl = document.createElement('div');
+  listEl.className = 'legend-list';
+
+  for (const item of legendData) {
+    const itemEl = document.createElement('div');
+    itemEl.className = 'legend-item';
+
+    const colorBox = document.createElement('div');
+    colorBox.className = 'legend-color-box';
+    colorBox.setAttribute('data-color', item.color);
+    itemEl.appendChild(colorBox);
+
+    const label = document.createElement('div');
+    label.className = 'legend-label';
+    label.textContent = item.label;
+    itemEl.appendChild(label);
+
+    listEl.appendChild(itemEl);
+  }
+
+  legendEl.appendChild(listEl);
+  return legendEl;
+}
