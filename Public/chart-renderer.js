@@ -302,8 +302,6 @@ function setupChart(ganttData) {
 
   // Set its "width" (now vertical) to span the container height
   // and its "height" (now horizontal) to match the SVG height
-  verticalInnerEl.style.width = '100%'; // This is now the element's height
-  verticalInnerEl.style.height = '30px'; // This is now the element's width
   verticalInnerEl.style.position = 'absolute';
   verticalInnerEl.style.top = '0';
   verticalInnerEl.style.left = '0';
@@ -320,7 +318,8 @@ function setupChart(ganttData) {
   // Apply the same repeating background as the footer
   verticalInnerEl.style.backgroundImage = `url("data:image/svg+xml,${encodedSVG}")`;
   verticalInnerEl.style.backgroundRepeat = 'repeat-x'; // Repeat along its "width" (now vertical)
-  verticalInnerEl.style.backgroundSize = 'auto 100%'; // Scale height (now width) to 30px
+  // --- FIX: Use explicit SVG dimensions for background-size ---
+  verticalInnerEl.style.backgroundSize = '1280px 30px'; // Use native SVG dimensions
   
   verticalBorderEl.appendChild(verticalInnerEl);
   chartWrapper.appendChild(verticalBorderEl);
@@ -339,7 +338,7 @@ function setupChart(ganttData) {
   footerSvgEl.style.height = '30px'; // Set the div height to match the SVG
   footerSvgEl.style.backgroundImage = `url("data:image/svg+xml,${encodedSVGFooter}")`;
   footerSvgEl.style.backgroundRepeat = 'repeat-x'; // Repeat horizontally
-  footerSvgEl.style.backgroundSize = 'auto 100%'; // Scale height to fit, width is auto
+  footerSvgEl.style.backgroundSize = 'auto 30px'; // Scale height to fit, width is auto
   
   chartWrapper.appendChild(footerSvgEl);
   // --- END: Add Footer SVG ---
