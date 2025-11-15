@@ -6,7 +6,7 @@
 
 // --- NEW: Store the SVG HTML as a string ---
 // --- User requested placeholder for vertical SVG ---
-const verticalSVG = `<svg width="30" height="1280" viewBox="720 -30 1280 30" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" overflow="hidden">
+const verticalSVG = `<svg width="30" height="1280" viewBox="690 0 30 1280" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" overflow="hidden">
 <g transform="matrix(0 1 -1 0 720 0)"><path d="M401.92
 14.8852 412.447 25.4116 416.805 29.7703 416.805 14.8852 416.805 0 387.035 0
 391.394 4.35868 401.92 14.8852Z" fill="#0C2340"
@@ -739,7 +739,6 @@ function setupChart(ganttData) {
   verticalSvgEl.style.top = '0';
   verticalSvgEl.style.width = '30px';
   verticalSvgEl.style.zIndex = '5';
-  verticalSvgEl.style.backgroundColor = 'rgba(255, 0, 0, 0.3)'; // DEBUG: temporary red tint
   verticalSvgEl.style.backgroundImage = `url("data:image/svg+xml,${encodedVerticalSVG}")`;
   verticalSvgEl.style.backgroundRepeat = 'repeat-y';
   verticalSvgEl.style.backgroundSize = '30px 1280px';
