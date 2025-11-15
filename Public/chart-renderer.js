@@ -284,39 +284,13 @@ function setupChart(ganttData) {
   }
   // --- END: Add Legend ---
 
-  // --- NEW: Add Vertical SVG Border ---
-  // --- ROOT CAUSE FIX: Re-written to be simple and robust ---
-  // 1. Create the 30px-wide container
-  const verticalBorderEl = document.createElement('div');
-  verticalBorderEl.style.position = 'absolute';
-  verticalBorderEl.style.top = '0';
-  verticalBorderEl.style.left = '0'; 
-  verticalBorderEl.style.bottom = '0';
-  verticalBorderEl.style.width = '30px'; 
-  verticalBorderEl.style.zIndex = '5';
-  
-  // 2. URL-encode the SVG
-  const encodedSVG = encodeURIComponent(footerSVG.replace(/(\r\n|\n|\r)/gm, ""));
-
-  // 3. Apply background directly to the container
-  verticalBorderEl.style.backgroundImage = `url("data:image/svg+xml,${encodedSVG}")`;
-  
-  // 4. Set size to SVG's native height (30px) and auto-scale width
-  //    This is the same as the footer.
-  verticalBorderEl.style.backgroundSize = 'auto 30px'; 
-  
-  // 5. Set repeat to 'repeat-y' (tile vertically)
-  //    This will tile the 30px-tall graphic down the side.
-  verticalBorderEl.style.backgroundRepeat = 'repeat-y';
-
-  // 6. Remove all the old, problematic rotation logic.
-  //    (The 'verticalInnerEl' and its transforms are gone).
-
-  chartWrapper.appendChild(verticalBorderEl);
-  // --- END: Add Vertical SVG Border ---
+  // --- VERTICAL SVG BORDER BLOCK REMOVED ---
 
 
   // --- NEW: Add Footer SVG ---
+  // 2. URL-encode the SVG (moved from vertical border block)
+  const encodedSVG = encodeURIComponent(footerSVG.replace(/(\r\n|\n|\r)/gm, ""));
+  
   const footerSvgEl = document.createElement('div');
   footerSvgEl.className = 'gantt-footer-svg';
   
