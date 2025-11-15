@@ -739,9 +739,18 @@ function setupChart(ganttData) {
   // --- END: Add BIP Logo ---
 
   // --- NEW: Add Vertical SVG ---
+  // --- FIX: Use background-image instead of innerHTML ---
+  const encodedVerticalSVG = encodeURIComponent(verticalSVG.replace(/(\r\n|\n|\r)/gm, ""));
+
   const verticalSvgEl = document.createElement('div');
   verticalSvgEl.className = 'gantt-vertical-svg';
-  verticalSvgEl.innerHTML = verticalSVG; // Inject the SVG string
+  // verticalSvgEl.innerHTML = verticalSVG; // <-- REMOVED THIS LINE
+  
+  // Add styles directly to use the SVG as a repeating background
+  verticalSvgEl.style.backgroundImage = `url("data:image/svg+xml,${encodedVerticalSVG}")`;
+  verticalSvgEl.style.backgroundRepeat = 'repeat-y'; // Tile vertically
+  verticalSvgEl.style.backgroundSize = '30px auto'; // Use native 30px width
+  
   chartWrapper.appendChild(verticalSvgEl);
   // --- END: Add Vertical SVG ---
   
@@ -832,7 +841,7 @@ function setupChart(ganttData) {
 
   // --- NEW: Add Footer SVG ---
   // 2. URL-encode the SVG (moved from vertical border block)
-  const encodedSVG = encodeURIComponent(footerSVG.replace(/(\r\n|\n|\r)/gm, ""));
+  const encodedFooterSVG = encodeURIComponent(footerSVG.replace(/(\r\n|\n|\r)/gm, "")); // <-- Renamed to avoid conflict
   
   const footerSvgEl = document.createElement('div');
   footerSvgEl.className = 'gantt-footer-svg';
@@ -840,7 +849,7 @@ function setupChart(ganttData) {
   // We can re-use the encoded SVG from the vertical border
   // --- MODIFICATION: Removed dynamic styles, they are now in style.css ---
   // footerSvgEl.style.height = '30px'; 
-  footerSvgEl.style.backgroundImage = `url("data:image/svg+xml,${encodedSVG}")`;
+  footerSvgEl.style.backgroundImage = `url("data:image/svg+xml,${encodedFooterSVG}")`;
   // footerSvgEl.style.backgroundRepeat = 'repeat-x'; // Horizontal repeat for footer
   // footerSvgEl.style.backgroundSize = 'auto 30px'; // Native height, auto width
   
