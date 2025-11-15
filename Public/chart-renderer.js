@@ -285,39 +285,39 @@ function setupChart(ganttData) {
   // --- END: Add Legend ---
 
   // --- NEW: Add Vertical SVG Border ---
+  // --- FINAL FIX: Use a simpler method ---
   const verticalBorderEl = document.createElement('div');
   verticalBorderEl.style.position = 'absolute';
   verticalBorderEl.style.top = '0';
   verticalBorderEl.style.left = '0'; 
   verticalBorderEl.style.bottom = '0';
   verticalBorderEl.style.width = '30px'; 
-  verticalBorderEl.style.overflow = 'hidden'; 
-  verticalBorderEl.style.zIndex = '5'; 
+  verticalBorderEl.style.zIndex = '5';
+  verticalBorderEl.style.overflow = 'hidden'; // Hide overflow
 
-  // --- FIX: Create an inner element to rotate ---
+  // Create an inner element
   const verticalInnerEl = document.createElement('div');
   
-  // --- FIX: Style the inner element ---
-  // Position it absolutely to fill the parent
-  verticalInnerEl.style.position = 'absolute';
-  verticalInnerEl.style.top = '0';
-  verticalInnerEl.style.left = '0';
-  verticalInnerEl.style.width = '100%'; // 30px
-  verticalInnerEl.style.height = '100%'; // 100% of chart height
-  
-  // Use writing-mode and transform to rotate the element's coordinate system
-  verticalInnerEl.style.writingMode = 'vertical-rl';
-  verticalInnerEl.style.transform = 'rotate(180deg)';
-
   // Get the encoded SVG
   const encodedSVG = encodeURIComponent(footerSVG.replace(/(\r\n|\n|\r)/gm, ""));
-  
-  // Apply the background
   verticalInnerEl.style.backgroundImage = `url("data:image/svg+xml,${encodedSVG}")`;
-  // Repeat along the new X-axis (which is now vertical)
+  
+  // Set the background size to its native dimensions
+  verticalInnerEl.style.backgroundSize = '1280px 30px';
+  // Repeat it horizontally (this is correct)
   verticalInnerEl.style.backgroundRepeat = 'repeat-x';
-  // Use the native SVG size to prevent stretching
-  verticalInnerEl.style.backgroundSize = '1280px 30px'; 
+
+  // --- This is the new logic ---
+  // Set the inner element's height to the SVG's *width* (1280px)
+  // and width to the SVG's *height* (30px).
+  verticalInnerEl.style.height = '1280px';
+  verticalInnerEl.style.width = '30px';
+  
+  // Rotate the element
+  verticalInnerEl.style.transform = 'rotate(90deg)';
+  // Set the transform origin to the bottom-left corner
+  verticalInnerEl.style.transformOrigin = '0 100%';
+  // --- End new logic ---
   
   verticalBorderEl.appendChild(verticalInnerEl);
   chartWrapper.appendChild(verticalBorderEl);
@@ -553,7 +553,7 @@ async function showAnalysisModal(taskIdentifier) {
       <button class="modal-close" id="modal-close-btn">&times;</button>
     </div>
     <div class="modal-body" id="modal-body-content">
-      <div class="modal-spinner"></div>
+      <div classs="modal-spinner"></div>
     </div>
   `;
   
