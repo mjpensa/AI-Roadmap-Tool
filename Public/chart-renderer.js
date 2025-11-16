@@ -744,12 +744,13 @@ function setupChart(ganttData) {
   // Style the SVG element inside
   const svgElement = verticalSvgWrapper.querySelector('svg');
   if (svgElement) {
+    // Set preserveAspectRatio to "none" so SVG stretches to fill container
+    svgElement.setAttribute('preserveAspectRatio', 'none');
     svgElement.style.display = 'block';
-    svgElement.style.width = '30px';
+    svgElement.style.width = '100%';
     svgElement.style.height = '100%';
-    svgElement.style.objectFit = 'none';
-    svgElement.style.objectPosition = 'left top';
     console.log('Vertical SVG element created and styled');
+    console.log('SVG viewBox:', svgElement.getAttribute('viewBox'));
   } else {
     console.error('SVG element not found in verticalSVG string');
   }
