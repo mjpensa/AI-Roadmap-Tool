@@ -754,6 +754,16 @@ function setupChart(ganttData) {
     svgElement.style.height = '100%';
     console.log('Vertical SVG element created and styled');
     console.log('SVG viewBox:', svgElement.getAttribute('viewBox'));
+    console.log('SVG children count:', svgElement.children.length);
+    console.log('First child:', svgElement.children[0]);
+    console.log('SVG bounding box:', svgElement.getBBox());
+
+    // Check if <g> element exists
+    const gElement = svgElement.querySelector('g');
+    if (gElement) {
+      console.log('Found <g> element with transform:', gElement.getAttribute('transform'));
+      console.log('Paths in <g>:', gElement.querySelectorAll('path').length);
+    }
   } else {
     console.error('SVG element not found in verticalSVG string');
   }
