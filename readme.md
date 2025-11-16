@@ -38,9 +38,9 @@ server.js
 
 package.json
 
-README.md
+readme.md
 
-public/ (directory)
+Public/ (directory)
 
 index.html
 
