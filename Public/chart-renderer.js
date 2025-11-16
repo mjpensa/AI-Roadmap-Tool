@@ -747,6 +747,9 @@ function setupChart(ganttData) {
   // Style the SVG element inside
   const svgElement = verticalSvgWrapper.querySelector('svg');
   if (svgElement) {
+    // Remove overflow="hidden" which might be clipping the content
+    svgElement.removeAttribute('overflow');
+
     // Set preserveAspectRatio to "none" so SVG stretches to fill container
     svgElement.setAttribute('preserveAspectRatio', 'none');
     svgElement.style.display = 'block';
@@ -754,6 +757,21 @@ function setupChart(ganttData) {
     svgElement.style.height = '100%';
     console.log('Vertical SVG element created and styled');
     console.log('SVG viewBox:', svgElement.getAttribute('viewBox'));
+    console.log('SVG children count:', svgElement.children.length);
+    console.log('First child:', svgElement.children[0]);
+
+    try {
+      console.log('SVG bounding box:', svgElement.getBBox());
+    } catch(e) {
+      console.log('Could not get bounding box:', e.message);
+    }
+
+    // Check if <g> element exists
+    const gElement = svgElement.querySelector('g');
+    if (gElement) {
+      console.log('Found <g> element with transform:', gElement.getAttribute('transform'));
+      console.log('Paths in <g>:', gElement.querySelectorAll('path').length);
+    }
   } else {
     console.error('SVG element not found in verticalSVG string');
   }
