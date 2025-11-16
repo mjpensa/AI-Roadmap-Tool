@@ -18,7 +18,7 @@ let footerSVG = '';
 async function loadSVGs() {
   try {
     const [verticalResponse, footerResponse] = await Promise.all([
-      fetch('/vertical-stripe.svg'),
+      fetch('/vertical-stripe2.svg'),
       fetch('/horizontal-stripe.svg')
     ]);
 
