@@ -170,8 +170,8 @@ function setupChart(ganttData) {
 
   // --- Dynamic Grid Columns ---
   const numCols = ganttData.timeColumns.length;
-  // --- MODIFICATION: Increased min-width to 400px and increased fr to 2.34 (56% wider than original 1.5fr) for better text readability ---
-  gridEl.style.gridTemplateColumns = `minmax(400px, 2.34fr) repeat(${numCols}, 1fr)`;
+  // --- MODIFICATION: Use max-content for first column to auto-expand and fit all text on single line ---
+  gridEl.style.gridTemplateColumns = `max-content repeat(${numCols}, 1fr)`;
 
   // --- Create Header Row ---
   const headerLabel = document.createElement('div');

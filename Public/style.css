@@ -64,8 +64,8 @@
   padding: 10px 12px;
   font-size: 13px; /* Base size */
   border-bottom: 1px solid #0D0D0D; /* Grid line color */
-  white-space: normal; 
-  overflow-wrap: break-word;
+  white-space: nowrap; /* Prevent text wrapping - column will auto-expand */
+  overflow: visible; /* Allow text to be fully visible */
 }
 
 .gantt-row-label.swimlane {
