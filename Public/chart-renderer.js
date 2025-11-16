@@ -738,18 +738,11 @@ function setupChart(ganttData) {
   verticalSvgWrapper.style.zIndex = '5';
   verticalSvgWrapper.style.overflow = 'visible';  // Changed from hidden to visible for debugging
 
-  // DEBUG: Make the wrapper very visible
-  verticalSvgWrapper.style.backgroundColor = 'red';
-  verticalSvgWrapper.style.border = '3px solid yellow';
+  // FIX: Add white background so dark SVG colors are visible against dark chart background
+  verticalSvgWrapper.style.backgroundColor = 'white';
 
-  // TEST: Try a simple SVG first
-  const testSVG = `<svg width="30" height="100%" viewBox="0 0 30 100" xmlns="http://www.w3.org/2000/svg">
-    <rect x="0" y="0" width="30" height="100" fill="blue"/>
-    <text x="15" y="50" fill="white" font-size="12" text-anchor="middle">TEST</text>
-  </svg>`;
-
-  // Insert the SVG directly as HTML
-  verticalSvgWrapper.innerHTML = testSVG;  // Using test SVG for now
+  // Insert the actual vertical SVG
+  verticalSvgWrapper.innerHTML = verticalSVG;
 
   // Style the SVG element inside
   const svgElement = verticalSvgWrapper.querySelector('svg');
@@ -759,11 +752,10 @@ function setupChart(ganttData) {
     svgElement.style.display = 'block';
     svgElement.style.width = '100%';
     svgElement.style.height = '100%';
-    console.log('TEST SVG element created and styled');
+    console.log('Vertical SVG element created and styled');
     console.log('SVG viewBox:', svgElement.getAttribute('viewBox'));
-    console.log('SVG innerHTML:', svgElement.innerHTML.substring(0, 200));
   } else {
-    console.error('SVG element not found');
+    console.error('SVG element not found in verticalSVG string');
   }
 
   chartWrapper.appendChild(verticalSvgWrapper);
