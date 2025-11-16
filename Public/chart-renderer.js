@@ -727,7 +727,11 @@ function setupChart(ganttData) {
   // --- END: Add BIP Logo ---
 
   // --- NEW: Add Vertical SVG ---
-  // Create a wrapper div for the SVG
+  // Create SVG without viewBox for repeating pattern
+  const verticalSVGNoViewBox = verticalSVG.replace(/viewBox="[^"]*"/, '');
+  const encodedSVG = encodeURIComponent(verticalSVGNoViewBox.replace(/(\r\n|\n|\r)/gm, ""));
+
+  // Create a wrapper div for the repeating SVG background
   const verticalSvgWrapper = document.createElement('div');
   verticalSvgWrapper.className = 'gantt-vertical-svg-wrapper';
   verticalSvgWrapper.style.position = 'absolute';
@@ -736,55 +740,15 @@ function setupChart(ganttData) {
   verticalSvgWrapper.style.bottom = '0';
   verticalSvgWrapper.style.width = '30px';
   verticalSvgWrapper.style.zIndex = '5';
-  verticalSvgWrapper.style.overflow = 'visible';  // Changed from hidden to visible for debugging
 
-  // FIX: Add white background so dark SVG colors are visible against dark chart background
+  // Use the SVG as a repeating background image
   verticalSvgWrapper.style.backgroundColor = 'white';
+  verticalSvgWrapper.style.backgroundImage = `url("data:image/svg+xml,${encodedSVG}")`;
+  verticalSvgWrapper.style.backgroundRepeat = 'repeat-y';
+  verticalSvgWrapper.style.backgroundSize = '30px auto';  // 30px wide, auto height to maintain aspect ratio
+  verticalSvgWrapper.style.backgroundPosition = 'left top';
 
-  // Insert the actual vertical SVG
-  verticalSvgWrapper.innerHTML = verticalSVG;
-
-  // Style the SVG element inside
-  const svgElement = verticalSvgWrapper.querySelector('svg');
-  if (svgElement) {
-    // Remove overflow="hidden" which might be clipping the content
-    svgElement.removeAttribute('overflow');
-
-    // EXPERIMENTAL: Remove viewBox to see if content appears without coordinate system restrictions
-    const originalViewBox = svgElement.getAttribute('viewBox');
-    svgElement.removeAttribute('viewBox');
-
-    // Also remove the width/height attributes to let CSS control sizing
-    svgElement.removeAttribute('width');
-    svgElement.removeAttribute('height');
-
-    // Set preserveAspectRatio to "none" so SVG stretches to fill container
-    svgElement.setAttribute('preserveAspectRatio', 'none');
-    svgElement.style.display = 'block';
-    svgElement.style.width = '100%';
-    svgElement.style.height = '100%';
-
-    console.log('Vertical SVG element created and styled');
-    console.log('Original viewBox (removed):', originalViewBox);
-    console.log('SVG children count:', svgElement.children.length);
-
-    // Check if <g> element exists
-    const gElement = svgElement.querySelector('g');
-    if (gElement) {
-      console.log('Found <g> element with transform:', gElement.getAttribute('transform'));
-      console.log('Paths in <g>:', gElement.querySelectorAll('path').length);
-
-      // Get bounding box of the <g> element instead
-      try {
-        const gBox = gElement.getBBox();
-        console.log('G element bounding box:', gBox);
-      } catch(e) {
-        console.log('Could not get G bounding box:', e.message);
-      }
-    }
-  } else {
-    console.error('SVG element not found in verticalSVG string');
-  }
+  console.log('Vertical SVG wrapper created with repeating background');
 
   chartWrapper.appendChild(verticalSvgWrapper);
   // --- END: Add Vertical SVG ---
